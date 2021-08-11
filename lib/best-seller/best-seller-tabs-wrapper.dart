@@ -27,7 +27,18 @@ class _BestSellerTabsWrapperState extends State<BestSellerTabsWrapper> {
             tabs: tabs,
             isScrollable: true,
             physics: BouncingScrollPhysics(),
-            indicatorColor: Theme.of(context).accentColor,
+            indicatorColor: Theme.of(context).hintColor,
+            indicatorWeight: 8.0,
+            labelStyle: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+            unselectedLabelColor: Colors.grey[500],
+            unselectedLabelStyle: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 16,
+            ),
+            labelPadding: EdgeInsets.only(top: 10, right: 5, left: 5),
           ),
         ),
         body: TabBarView(

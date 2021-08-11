@@ -14,6 +14,7 @@ class CustomTheme with ChangeNotifier {
   static ThemeData get lightTheme {
     return ThemeData(
       accentColor: Color(0xffE1E7FF),
+      hintColor: Color(0xff717FC8),
       accentIconTheme: IconThemeData(
         color: Colors.red,
       ),
