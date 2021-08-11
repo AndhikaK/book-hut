@@ -1,3 +1,4 @@
+import 'package:book_hut/best-seller/best-seller-tabs-wrapper.dart';
 import 'package:book_hut/best-seller/best_seller_page.dart';
 import 'package:book_hut/theme/config.dart';
 import 'package:book_hut/theme/custom_theme.dart';
@@ -8,7 +9,6 @@ void main() {
 }
 
 // nyt books api : 9ZgxX7FNfYj7K3IpQS9EZ6AwzBU1rM00
-// books list : hardcover-fiction, hardcover-nonfiction,science,sports, travel,manga
 
 class MySecondApp extends StatefulWidget {
   const MySecondApp({Key? key}) : super(key: key);
@@ -30,9 +30,9 @@ class _MySecondAppState extends State<MySecondApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Knight and Day',
+      title: 'Books Hut',
       home: MyHomePage(
-        title: "Whatever",
+        title: "Books Hut",
       ),
       theme: CustomTheme.lightTheme, //3
       darkTheme: CustomTheme.darkTheme, //4
@@ -53,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BestSellerPage(),
+      body: BestSellerTabsWrapper(),
     );
   }
 }

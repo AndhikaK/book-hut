@@ -1,23 +1,43 @@
 import 'dart:convert';
 
 import 'package:book_hut/best-seller/best_seller_item.dart';
+import 'package:book_hut/best-seller/best_seller_not_found.dart';
+import 'package:book_hut/model/books.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class BestSellerPage extends StatefulWidget {
-  const BestSellerPage({Key? key}) : super(key: key);
+  final String apiUrl;
+  const BestSellerPage({Key? key, required this.apiUrl}) : super(key: key);
 
   @override
   _BestSellerPageState createState() => _BestSellerPageState();
 }
 
-class _BestSellerPageState extends State<BestSellerPage> {
-  final String apiUrl =
-      "https://api.nytimes.com/svc/books/v3/lists/current/manga.json?api-key=9ZgxX7FNfYj7K3IpQS9EZ6AwzBU1rM00";
+class _BestSellerPageState extends State<BestSellerPage>
+    with AutomaticKeepAliveClientMixin {
+  late Future<Books> futureBooks;
 
-  Future<List<dynamic>> fetchData() async {
-    var result = await http.get(Uri.parse(apiUrl));
-    return json.decode(result.body)['results']['books'];
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    super.initState();
+    futureBooks = fetchData().whenComplete(() {
+      setState(() {});
+    });
+  }
+
+  // final String apiUrl = apiUrl;
+
+  Future<Books> fetchData() async {
+    var result = await http.get(Uri.parse(widget.apiUrl));
+    if (result.statusCode == 200) {
+      return Books.formJson(json.decode(result.body)['results']['books']);
+    } else {
+      return Books.formJson([]);
+    }
   }
 
   @override
@@ -25,11 +45,13 @@ class _BestSellerPageState extends State<BestSellerPage> {
     return SafeArea(
       child: Container(
         padding: EdgeInsets.only(left: 15, right: 15),
-        child: FutureBuilder<List<dynamic>>(
-          future: fetchData(),
+        child: FutureBuilder<Books>(
+          future: futureBooks,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
-              // return Text("this has data");
+              if (snapshot.data.book.length == 0) {
+                return BestSellerNotFound();
+              }
               return GridView.count(
                 physics: BouncingScrollPhysics(),
                 padding: EdgeInsets.only(top: 15, bottom: 15),
@@ -38,10 +60,10 @@ class _BestSellerPageState extends State<BestSellerPage> {
                 crossAxisSpacing: 15.0,
                 childAspectRatio: 0.6,
                 children: List.generate(
-                  snapshot.data.length,
+                  snapshot.data.book.length,
                   (index) {
                     return BestSellerItem(
-                      data: snapshot.data[index],
+                      data: snapshot.data.book[index],
                     );
                   },
                 ),
