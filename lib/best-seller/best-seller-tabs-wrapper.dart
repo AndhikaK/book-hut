@@ -29,6 +29,14 @@ class _BestSellerTabsWrapperState extends State<BestSellerTabsWrapper> {
             physics: BouncingScrollPhysics(),
             indicatorColor: Theme.of(context).hintColor,
             indicatorWeight: 8.0,
+            indicator: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  width: 8,
+                  color: Theme.of(context).hintColor,
+                ),
+              ),
+            ),
             labelStyle: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 20,
